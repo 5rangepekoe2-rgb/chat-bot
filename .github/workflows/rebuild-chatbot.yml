@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'rebuild_chatbot.py'
+      - 'trigger-rebuild.txt'
   workflow_dispatch:
 permissions:
   contents: write
