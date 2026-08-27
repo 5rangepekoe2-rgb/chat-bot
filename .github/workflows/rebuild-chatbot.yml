@@ -1,0 +1,29 @@
+name: Rebuild Chatbot
+on:
+  push:
+    paths:
+      - 'rebuild_chatbot.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild index.html
+        run: python rebuild_chatbot.py
+      - name: Commit rebuilt chatbot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Rebuild improved embedded JSON chatbot"
+            git push
+          fi
